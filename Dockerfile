@@ -100,16 +100,18 @@ RUN cd /root/php-7.3.12/ext \
 # install swoole
 # download swoole
 ARG SWOOLE_VERSION
-RUN cd /tmp \
+RUN cd /root \
         && curl -L https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -o swoole-src.tar.gz
 # build swoole
-RUN cd /tmp \
+RUN cd /root \
         && tar -xzf swoole-src.tar.gz \
         && cd swoole-src* \
         && phpize \
         && ./configure \
         && make \
-        && make install
+        && make install \
+        && cd /root \
+        && rm swoole-src.tar.gz
 
 COPY etc/php.d etc/php.d
 
