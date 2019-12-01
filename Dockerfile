@@ -148,6 +148,11 @@ ARG LD_LIBRARY_PATH
 RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> /etc/profile
 RUN echo "export PATH=$PATH:~/.composer/vendor/bin" >> /etc/profile
 
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+RUN echo "export http_proxy=${HTTP_PROXY}" >> /etc/profile
+RUN echo "export http_proxys=${HTTPS_PROXY}" >> /etc/profile
+
 WORKDIR /root/codeDir
 
 CMD ["/usr/sbin/sshd", "-D"]
