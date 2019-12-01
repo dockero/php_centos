@@ -20,10 +20,9 @@ RUN yum -y install \
         autoconf \
         help2man
 
-# install lastest git
-RUN yum -y install \
-        https://centos7.iuscommunity.org/ius-release.rpm \
-        git2u-all
+# install git 2
+RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
+RUN yum -y install git2u-all
 
 # install debug tools
 RUN yum install -y ncurses-devel texinfo readline-devel automake flex
