@@ -97,6 +97,26 @@ RUN cd /root/php-7.3.12/ext \
         && make \
         && make install
 
+# install zip
+# upgrade libzip
+RUN yum -y remove libzip-devel
+RUN cd /root \
+        && wget https://libzip.org/download/libzip-1.3.2.tar.gz \
+        && tar xvf libzip-1.3.2.tar.gz \
+        && cd libzip-1.3.2 \
+        && ./configure \
+        && make && make install \
+        && cd /root \
+        && yes | rm libzip-1.3.2.tar.gz
+
+# install zip extension
+RUN cd /root/php-7.3.12/ext \
+        && cd zip \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install
+
 # install swoole
 # download swoole
 ARG SWOOLE_VERSION
