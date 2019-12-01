@@ -142,8 +142,9 @@ RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/compos
         && composer global require hirak/prestissimo \
         && composer global require "squizlabs/php_codesniffer=*"
 
-# set the path to the compiler's search library
+# set the path for ssh
 ARG LD_LIBRARY_PATH
+# set the path to the compiler's search library
 RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> /etc/profile
 RUN echo "export PATH=$PATH:~/.composer/vendor/bin" >> /etc/profile
 
