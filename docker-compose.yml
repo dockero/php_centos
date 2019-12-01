@@ -2,7 +2,7 @@ version: '3'
 
 services:
   php:
-    image: php:centos
+    image: codinghuang/php:centos
     build:
       context: .
       args:
