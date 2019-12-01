@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  php_centos:
+    image: php_centos:ssh
+    build:
+      context: .
+      args:
+        - PASSWORD=${PASSWORD}
+        - SWOOLE_VERSION=${SWOOLE_VERSION}
+        - SSH_PUB_KEY=${SSH_PUB_KEY}
+        - LD_LIBRARY_PATH=/usr/lib
+    container_name: php_centos
+    volumes:
+      - ${CODEDIR_VOLUME}
+    ports:
+      - "${HOST_SSH_PORT}:22"
+    environment:
+      - TEST_PHP_EXECUTABLE=/usr/local/bin/php
+      - http_proxy=${HTTP_PROXY}
+      - https_proxy=${HTTPS_PROXY}
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
+    stdin_open: true
+    tty: true
+    privileged: true
+    restart: always

@@ -1,0 +1,129 @@
+FROM centos:7
+
+LABEL maintainer="codinghuang"
+
+RUN yum -y update
+
+# install dev libraries
+RUN yum -y install \
+        libcurl-devel \
+        libxml2-devel \
+        openssl-devel
+
+# install dev tools
+RUN yum -y install \
+        wget \
+        gcc \
+        gcc-c++ \
+        make \
+        vim \
+        autoconf \
+        help2man
+
+# install lastest git
+RUN yum -y install \
+        https://centos7.iuscommunity.org/ius-release.rpm \
+        git2u-all
+
+# install debug tools
+RUN yum install -y ncurses-devel texinfo readline-devel automake flex
+RUN yum install -y gdb
+RUN cd /root \
+        && wget https://cgdb.me/files/cgdb-0.7.0.tar.gz \
+        && tar xvfz cgdb-0.7.0.tar.gz \
+        && cd cgdb-0.7.0 \
+        && ./configure \
+        && make \
+        && make install \
+        && cd /root \
+        && rm -r cgdb-0.7.0.tar.gz cgdb-0.7.0
+
+# install ssh
+RUN yum install -y \
+        openssh-server
+
+# modify the password
+ARG PASSWORD
+RUN sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config \
+        && ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key \
+        && ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key \
+        && ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key \
+        && echo "root:${PASSWORD}" | chpasswd
+
+# add id_rsa.pub in authorized_keys
+ARG SSH_PUB_KEY
+RUN mkdir -p ~/.ssh \
+        && echo $SSH_PUB_KEY > ~/.ssh/authorized_keys
+
+# install php
+# download php src
+ENV PATH $PATH:/usr/bin:/usr/sbin
+RUN cd /root \
+        && curl -L http://cn2.php.net/distributions/php-7.3.12.tar.xz -o php-7.3.12.tar.gz
+# build php
+RUN cd /root \
+        && tar xvf php-7.3.12.tar.gz \
+        && cd php-7.3.12 \
+        && ./configure --prefix=/usr --enable-fpm --enable-debug --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d \
+        && make \
+        && make install \
+        && cp php.ini-development /etc/php.ini \
+        && cd /root \
+        && rm -r php-7.3.12.tar.gz
+
+# install php extension
+# install openssl
+RUN cd /root/php-7.3.12/ext \
+        && cd openssl \
+        && cp config0.m4 config.m4 \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install
+
+# install zlib
+RUN cd /root/php-7.3.12/ext \
+        && cd zlib \
+        && cp config0.m4 config.m4 \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install
+
+# install curl
+RUN cd /root/php-7.3.12/ext \
+        && cd curl \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install
+
+# install swoole
+# download swoole
+ARG SWOOLE_VERSION
+RUN cd /tmp \
+        && curl -L https://github.com/swoole/swoole-src/archive/v${SWOOLE_VERSION}.tar.gz -o swoole-src.tar.gz
+# build swoole
+RUN cd /tmp \
+        && tar -xzf swoole-src.tar.gz \
+        && cd swoole-src* \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install
+
+COPY etc/php.d etc/php.d
+
+# install composer
+RUN curl -sS https://getcomposer.org/installer | php \
+        && mv composer.phar /usr/local/bin/composer
+RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
+        && composer global require hirak/prestissimo
+
+# set the path to the compiler's search library
+ARG LD_LIBRARY_PATH
+RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> /etc/profile
+
+WORKDIR /root/codeDir
+
+CMD ["/usr/sbin/sshd", "-D"]
