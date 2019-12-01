@@ -139,11 +139,13 @@ COPY etc/php.d etc/php.d
 RUN curl -sS https://getcomposer.org/installer | php \
         && mv composer.phar /usr/local/bin/composer
 RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-        && composer global require hirak/prestissimo
+        && composer global require hirak/prestissimo \
+        && composer global require "squizlabs/php_codesniffer=*"
 
 # set the path to the compiler's search library
 ARG LD_LIBRARY_PATH
 RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> /etc/profile
+RUN echo "export PATH=$PATH:~/.composer/vendor/bin" >> /etc/profile
 
 WORKDIR /root/codeDir
 
