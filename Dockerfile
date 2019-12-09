@@ -16,9 +16,18 @@ RUN yum -y install \
         gcc \
         gcc-c++ \
         make \
+        cmake \
         vim \
         autoconf \
         help2man
+
+# install test tools
+RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
+        && tar xf release-1.8.0.tar.gz \
+        && cd googletest-release-1.8.0 \
+        && cmake -DBUILD_SHARED_LIBS=ON . \
+        && make \
+        && make install
 
 # install git 2
 RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
@@ -144,8 +153,10 @@ RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/compos
 
 # set the path for ssh
 ARG LD_LIBRARY_PATH
-# set the path to the compiler's search library
+# set the LD_LIBRARY_PATH to the compiler's search library
 RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> /etc/profile
+RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib" >> /etc/profile
+# set the PATH
 RUN echo "export PATH=$PATH:~/.composer/vendor/bin" >> /etc/profile
 
 ARG HTTP_PROXY
