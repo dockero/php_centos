@@ -19,7 +19,9 @@ RUN yum -y install \
         cmake \
         vim \
         autoconf \
-        help2man
+        help2man \
+        nmap \
+        net-tools
 
 # install test tools
 RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
@@ -159,6 +161,7 @@ RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib" >> /etc/profil
 # set the PATH
 RUN echo "export PATH=$PATH:~/.composer/vendor/bin" >> /etc/profile
 
+# set the http proxy for ssh
 ARG HTTP_PROXY
 ARG HTTPS_PROXY
 RUN echo "export http_proxy=${HTTP_PROXY}" >> /etc/profile
