@@ -22,7 +22,8 @@ RUN yum -y install \
         help2man \
         nmap \
         net-tools \
-        httpd-tools
+        httpd-tools \
+        valgrind
 
 # install test tools
 RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
