@@ -21,7 +21,8 @@ RUN yum -y install \
         autoconf \
         help2man \
         nmap \
-        net-tools
+        net-tools \
+        httpd-tools
 
 # install test tools
 RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
