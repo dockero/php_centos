@@ -4,25 +4,40 @@ LABEL maintainer="codinghuang"
 
 RUN yum -y update
 
+# install openssl-dev 1.1.1
+
+RUN cd /tmp \
+        && curl -O -L https://github.com/openssl/openssl/archive/OpenSSL_1_1_1c.tar.gz \
+        && tar -zxvf OpenSSL_1_1_1c.tar.gz \
+        && cd openssl-OpenSSL_1_1_1c \
+        && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib \
+        && make \
+        && make install
+
 # install dev libraries
 RUN yum -y install \
         libcurl-devel \
-        libxml2-devel \
-        openssl-devel
+        libxml2-devel
 
-# install dev tools
+# install pressure test tools
 RUN yum -y install \
-        wget \
+        httpd-tools
+
+# install build tools
+RUN yum -y install \
         gcc \
         gcc-c++ \
         make \
         cmake \
+        autoconf
+
+# install other tools
+RUN yum -y install \
+        wget \
         vim \
-        autoconf \
         help2man \
         nmap \
         net-tools \
-        httpd-tools \
         valgrind
 
 # install test tools
@@ -72,9 +87,11 @@ RUN mkdir -p ~/.ssh \
 ENV PATH $PATH:/usr/bin:/usr/sbin
 RUN cd /root \
         && curl -L http://cn2.php.net/distributions/php-7.3.12.tar.xz -o php-7.3.12.tar.gz
+# unpace php package
+RUN cd /root \
+        && tar xvf php-7.3.12.tar.gz
 # build php
 RUN cd /root \
-        && tar xvf php-7.3.12.tar.gz \
         && cd php-7.3.12 \
         && ./configure --prefix=/usr --enable-fpm --enable-debug --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d \
         && make \
@@ -125,6 +142,14 @@ RUN cd /root \
 # install zip extension
 RUN cd /root/php-7.3.12/ext \
         && cd zip \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install
+
+# install sockets extension
+RUN cd /root/php-7.3.12/ext \
+        && cd sockets \
         && phpize \
         && ./configure \
         && make \
