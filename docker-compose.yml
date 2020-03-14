@@ -18,6 +18,7 @@ services:
     ports:
       - "${HOST_SSH_PORT}:22"
       - "9501:9501"
+      - "9000:9000"
     environment:
       - TEST_PHP_EXECUTABLE=/usr/local/bin/php
       - http_proxy=${HTTP_PROXY}
