@@ -93,7 +93,15 @@ RUN cd /root \
 # build php
 RUN cd /root \
         && cd php-7.3.12 \
-        && ./configure --prefix=/usr --enable-fpm --enable-debug --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d \
+        && ./configure --prefix=/usr \
+                --with-config-file-path=/etc \
+                --with-config-file-scan-dir=/etc/php.d \
+                --enable-fpm \
+                --enable-debug \
+                --with-mysqli=mysqlnd \
+                --with-pdo-mysql=mysqlnd \
+                --with-mysqli \
+                --with-pdo_mysql \
         && make \
         && make install \
         && cp php.ini-development /etc/php.ini \
