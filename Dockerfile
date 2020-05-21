@@ -4,16 +4,6 @@ LABEL maintainer="codinghuang"
 
 RUN yum -y update
 
-# install openssl-dev 1.1.1
-
-RUN cd /tmp \
-        && curl -O -L https://github.com/openssl/openssl/archive/OpenSSL_1_1_1c.tar.gz \
-        && tar -zxvf OpenSSL_1_1_1c.tar.gz \
-        && cd openssl-OpenSSL_1_1_1c \
-        && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib \
-        && make \
-        && make install
-
 # install dev libraries
 RUN yum -y install \
         libcurl-devel \
@@ -38,7 +28,17 @@ RUN yum -y install \
         help2man \
         nmap \
         net-tools \
-        valgrind
+        valgrind \
+        gettext
+
+# install openssl-dev 1.1.1
+RUN cd /tmp \
+        && git clone https://gitee.com/codinghuang/openssl.git \
+        && cd openssl \
+        && git checkout OpenSSL_1_1_1c \
+        && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib \
+        && make \
+        && make install
 
 # install test tools
 RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
@@ -49,8 +49,14 @@ RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
         && make install
 
 # install git 2
-RUN yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-RUN yum -y install git2u-all
+RUN yum -y remove git*
+RUN cd /tmp \
+        && wget https://www.kernel.org/pub/software/scm/git/git-2.22.2.tar.gz \
+        && tar xzf git-2.22.2.tar.gz \
+        && cd git-2.22.2 \
+        && ./configure --with-openssl=/usr/local/openssl \
+        && make \
+        && make install
 
 # install debug tools
 RUN yum install -y ncurses-devel texinfo readline-devel automake flex
@@ -159,7 +165,10 @@ RUN cd /root/php-7.3.12/ext \
 RUN cd /root/php-7.3.12/ext \
         && cd sockets \
         && phpize \
-        && ./configure \
+        && ./configure --enable-openssl --with-openssl-dir=/usr/local/openssl/ \
+                --enable-sockets \
+                --enable-mysqlnd \
+                --enable-http2 \
         && make \
         && make install
 
