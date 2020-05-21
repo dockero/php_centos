@@ -166,10 +166,7 @@ RUN cd /root/php-7.3.12/ext \
 RUN cd /root/php-7.3.12/ext \
         && cd sockets \
         && phpize \
-        && ./configure --enable-openssl --with-openssl-dir=/usr/local/openssl/ \
-                --enable-sockets \
-                --enable-mysqlnd \
-                --enable-http2 \
+        && ./configure \
         && make \
         && make install
 
@@ -183,7 +180,10 @@ RUN cd /root \
         && tar -xzf swoole-src.tar.gz \
         && cd swoole-src* \
         && phpize \
-        && ./configure \
+        && ./configure --enable-openssl --with-openssl-dir=/usr/local/openssl/ \
+                --enable-sockets \
+                --enable-mysqlnd \
+                --enable-http2 \
         && make \
         && make install \
         && cd /root \
