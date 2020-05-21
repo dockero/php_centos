@@ -29,7 +29,8 @@ RUN yum -y install \
         nmap \
         net-tools \
         valgrind \
-        gettext
+        gettext \
+        git
 
 # install openssl-dev 1.1.1
 RUN cd /tmp \
