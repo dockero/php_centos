@@ -63,14 +63,16 @@ RUN cd /tmp \
 RUN yum install -y ncurses-devel texinfo readline-devel automake flex
 RUN yum install -y gdb
 RUN cd /root \
-        && wget https://cgdb.me/files/cgdb-0.7.0.tar.gz \
-        && tar xvfz cgdb-0.7.0.tar.gz \
-        && cd cgdb-0.7.0 \
+        && wget https://github.com/cgdb/cgdb/archive/v0.7.1.tar.gz -O cgdb-0.7.1.tar.gz \
+        && tar xvfz cgdb-0.7.1.tar.gz \
+        && cd cgdb-0.7.1 \
+        && ./autogen.sh \
         && ./configure \
         && make \
         && make install \
         && cd /root \
-        && rm -r cgdb-0.7.0.tar.gz cgdb-0.7.0
+        && rm -r cgdb-0.7.1.tar.gz cgdb-0.7.1
+
 
 # install ssh
 RUN yum install -y \
