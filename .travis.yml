@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+
+script: 
+    - cp .env.example .env
+    - docker-compose build
+
+after_success:
+    - 
+
+branches:
+    only:
+    - travis
+    - master
