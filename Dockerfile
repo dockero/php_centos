@@ -98,10 +98,11 @@ RUN cd /root \
         && curl -L http://cn2.php.net/distributions/php-7.3.12.tar.xz -o php-7.3.12.tar.gz
 # unpace php package
 RUN cd /root \
-        && tar xvf php-7.3.12.tar.gz
+        && tar xvf php-7.3.12.tar.gz \
+        && mv php-7.3.12 php-src
 # build php
 RUN cd /root \
-        && cd php-7.3.12 \
+        && cd php-src \
         && ./configure --prefix=/usr \
                 --with-config-file-path=/etc \
                 --with-config-file-scan-dir=/etc/php.d \
@@ -115,11 +116,11 @@ RUN cd /root \
         && make install \
         && cp php.ini-development /etc/php.ini \
         && cd /root \
-        && rm -r php-7.3.12.tar.gz
+        && rm -r php-src.tar.gz
 
 # install php extension
 # install openssl
-RUN cd /root/php-7.3.12/ext \
+RUN cd /root/php-src/ext \
         && cd openssl \
         && cp config0.m4 config.m4 \
         && phpize \
@@ -128,7 +129,7 @@ RUN cd /root/php-7.3.12/ext \
         && make install
 
 # install zlib
-RUN cd /root/php-7.3.12/ext \
+RUN cd /root/php-src/ext \
         && cd zlib \
         && cp config0.m4 config.m4 \
         && phpize \
@@ -137,7 +138,7 @@ RUN cd /root/php-7.3.12/ext \
         && make install
 
 # install curl
-RUN cd /root/php-7.3.12/ext \
+RUN cd /root/php-src/ext \
         && cd curl \
         && phpize \
         && ./configure \
@@ -157,7 +158,7 @@ RUN cd /root \
         && yes | rm libzip-1.3.2.tar.gz
 
 # install zip extension
-RUN cd /root/php-7.3.12/ext \
+RUN cd /root/php-src/ext \
         && cd zip \
         && phpize \
         && ./configure \
@@ -165,7 +166,7 @@ RUN cd /root/php-7.3.12/ext \
         && make install
 
 # install sockets extension
-RUN cd /root/php-7.3.12/ext \
+RUN cd /root/php-src/ext \
         && cd sockets \
         && phpize \
         && ./configure \
