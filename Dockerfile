@@ -93,13 +93,14 @@ RUN mkdir -p ~/.ssh \
 
 # install php
 # download php src
+ARG PHP_VERSION
 ENV PATH $PATH:/usr/bin:/usr/sbin
 RUN cd /root \
-        && curl -L http://cn2.php.net/distributions/php-7.3.12.tar.xz -o php-7.3.12.tar.gz
+        && curl -L http://cn2.php.net/distributions/php-${PHP_VERSION}.tar.xz -o php-${PHP_VERSION}.tar.gz
 # unpace php package
 RUN cd /root \
-        && tar xvf php-7.3.12.tar.gz \
-        && mv php-7.3.12 php-src
+        && tar xvf php-${PHP_VERSION}.tar.gz \
+        && mv php-${PHP_VERSION} php-src
 # build php
 RUN cd /root \
         && cd php-src \
@@ -116,7 +117,8 @@ RUN cd /root \
         && make install \
         && cp php.ini-development /etc/php.ini \
         && cd /root \
-        && rm -r php-src.tar.gz
+        && rm -r php-${PHP_VERSION}.tar.gz                \
+        && php -v
 
 # install php extension
 # install openssl

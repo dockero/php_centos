@@ -2,11 +2,12 @@ version: '3'
 
 services:
   php:
-    image: codinghuang/php:centos
+    image: codinghuang/php:${PHP_VERSION}-centos
     build:
       context: .
       args:
         - PASSWORD=${PASSWORD}
+        - PHP_VERSION=${PHP_VERSION}
         - SWOOLE_VERSION=${SWOOLE_VERSION}
         - SSH_PUB_KEY=${SSH_PUB_KEY}
         - LD_LIBRARY_PATH=/usr/lib
