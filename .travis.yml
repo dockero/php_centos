@@ -4,6 +4,9 @@ services:
 
 script: 
     - cp .env.example .env
+    - sed -i "_back" "s/xxxxxx/7.3.12/g" .env
+    - docker-compose build
+    - sed -i "_back" "s/xxxxxx/7.4.0/g" .env
     - docker-compose build
 
 after_success:
