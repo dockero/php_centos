@@ -93,6 +93,7 @@ RUN mkdir -p ~/.ssh \
 
 # install php
 # download php src
+# http://cn2.php.net/
 ARG PHP_VERSION
 ENV PATH $PATH:/usr/bin:/usr/sbin
 RUN cd /root \
