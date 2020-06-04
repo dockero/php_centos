@@ -40,7 +40,7 @@ RUN cd /tmp \
         && git checkout OpenSSL_1_1_1c \
         && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 RUN cp /usr/local/openssl/lib/pkgconfig/*.pc /usr/lib64/pkgconfig/
 
@@ -50,7 +50,7 @@ RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
         && cd googletest-release-1.8.0 \
         && cmake -DBUILD_SHARED_LIBS=ON . \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install git 2
 RUN yum -y remove git*
@@ -60,7 +60,7 @@ RUN cd /tmp \
         && cd git-2.22.2 \
         && ./configure --with-openssl=/usr/local/openssl \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install debug tools
 RUN yum install -y ncurses-devel texinfo readline-devel automake flex
@@ -72,7 +72,7 @@ RUN cd /root \
         && ./autogen.sh \
         && ./configure \
         && make > /dev/null \
-        && make install \
+        && make install > /dev/null \
         && cd /root \
         && rm -r cgdb-0.7.1.tar.gz cgdb-0.7.1
 
@@ -120,7 +120,7 @@ RUN cd /root \
                 --with-mysqli \
                 --with-pdo_mysql \
         && make > /dev/null \
-        && make install \
+        && make install > /dev/null \
         && cp php.ini-development /etc/php.ini \
         && cd /root \
         && rm -r php-${PHP_VERSION}.tar.gz                \
@@ -135,7 +135,7 @@ RUN cd /root/php-src/ext \
         && phpize \
         && ./configure \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install zlib
 RUN cd /root/php-src/ext \
@@ -144,7 +144,7 @@ RUN cd /root/php-src/ext \
         && phpize \
         && ./configure \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install curl
 RUN cd /root/php-src/ext \
@@ -152,7 +152,7 @@ RUN cd /root/php-src/ext \
         && phpize \
         && ./configure \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install zip
 # upgrade libzip
@@ -162,7 +162,7 @@ RUN cd /root \
         && tar xvf libzip-1.3.2.tar.gz \
         && cd libzip-1.3.2 \
         && ./configure --prefix=/usr/local/libzip \
-        && make > /dev/null && make install \
+        && make > /dev/null && make install > /dev/null \
         && cd /root \
         && yes | rm libzip-1.3.2.tar.gz
 
@@ -175,7 +175,7 @@ RUN cd /root/php-src/ext \
         && phpize \
         && ./configure \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install sockets extension
 RUN cd /root/php-src/ext \
@@ -183,7 +183,7 @@ RUN cd /root/php-src/ext \
         && phpize \
         && ./configure \
         && make > /dev/null \
-        && make install
+        && make install > /dev/null
 
 # install swoole
 # download swoole
@@ -200,7 +200,7 @@ RUN cd /root \
                 --enable-mysqlnd \
                 --enable-http2 \
         && make > /dev/null \
-        && make install \
+        && make install > /dev/null \
         && cd /root \
         && rm swoole-src.tar.gz
 
