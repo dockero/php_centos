@@ -7,7 +7,8 @@ RUN yum -y update
 # install dev libraries
 RUN yum -y install \
         libcurl-devel \
-        libxml2-devel
+        libxml2-devel \
+        sqlite-devel
 
 # install pressure test tools
 RUN yum -y install \
@@ -40,6 +41,8 @@ RUN cd /tmp \
         && ./config --prefix=/usr/local/openssl --openssldir=/usr/local/openssl shared zlib \
         && make \
         && make install
+
+RUN cp /usr/local/openssl/lib/pkgconfig/*.pc /usr/lib64/pkgconfig/
 
 # install test tools
 RUN wget https://github.com/google/googletest/archive/release-1.8.0.tar.gz \
@@ -125,6 +128,7 @@ RUN cd /root \
 
 # install php extension
 # install openssl
+
 RUN cd /root/php-src/ext \
         && cd openssl \
         && cp config0.m4 config.m4 \
@@ -157,12 +161,15 @@ RUN cd /root \
         && wget https://libzip.org/download/libzip-1.3.2.tar.gz \
         && tar xvf libzip-1.3.2.tar.gz \
         && cd libzip-1.3.2 \
-        && ./configure \
+        && ./configure --prefix=/usr/local/libzip \
         && make && make install \
         && cd /root \
         && yes | rm libzip-1.3.2.tar.gz
 
+RUN cp /usr/local/libzip/lib/pkgconfig/*.pc /usr/lib64/pkgconfig/
+
 # install zip extension
+
 RUN cd /root/php-src/ext \
         && cd zip \
         && phpize \
