@@ -1,5 +1,7 @@
 # 介绍
 
+[![Build Status](https://api.travis-ci.org/dockero/php_centos.svg?branch=master)](https://travis-ci.org/dockero/php_centos)
+
 在`centos`容器里面开启`ssh`，以便宿主机可以直接通过`vscode`的`ssh remote`插件登陆进去容器进行开发。
 
 ## 快速开始
