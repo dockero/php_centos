@@ -10,7 +10,7 @@
 
 你需要修改`docker-compose.yml`文件里面的变量。或者创建一个`.env`文件，例子：
 
-```shell
+```ini
 HTTP_PROXY=http://127.0.0.1:8080
 HTTPS_PROXY=http://127.0.0.1:8080
 CODEDIR_VOLUME=~/codeDir:/root/codeDir
