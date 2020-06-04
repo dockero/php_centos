@@ -96,10 +96,11 @@ RUN mkdir -p ~/.ssh \
 ARG PHP_VERSION
 ENV PATH $PATH:/usr/bin:/usr/sbin
 RUN cd /root \
-        && curl -L http://cn2.php.net/distributions/php-${PHP_VERSION}.tar.xz -o php-${PHP_VERSION}.tar.gz
+        && git clone https://gitee.com/codinghuang/php-repo.git \
+        && cp php-repo/php-${PHP_VERSION}.tar.gz .
 # unpace php package
-RUN cd /root \
-        && tar xvf php-${PHP_VERSION}.tar.gz \
+RUN cd /root                           \
+        && tar xf php-${PHP_VERSION}.tar.gz    \
         && mv php-${PHP_VERSION} php-src
 # build php
 RUN cd /root \
