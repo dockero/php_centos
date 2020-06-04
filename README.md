@@ -50,9 +50,17 @@ CODEDIR_VOLUME=~/codeDir:/root/codeDir
 
 把宿主机的公钥添加到容器的`~/.ssh/authorized_keys`里面，用来免密登陆。
 
+#### PHP_VERSION（必须）
+
+指定按照的`PHP`版本。支持`7.3.x`和`7.4.x`。例如填写`7.3.12`。
+
 #### SWOOLE_VERSION（必须）
 
 指定安装的`Swoole`版本。例如：`4.4.12`。
+
+#### GIT_VERSION（必须）
+
+建议版本大于`2.0`。
 
 ### 编译镜像
 
