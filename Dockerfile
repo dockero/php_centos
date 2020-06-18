@@ -2,7 +2,8 @@ FROM centos:7
 
 LABEL maintainer="codinghuang"
 
-RUN yum -y update
+RUN yum -y update && \
+        yum -y install epel-release
 
 # install dev libraries
 RUN yum -y install \
@@ -19,7 +20,7 @@ RUN yum -y install \
         gcc \
         gcc-c++ \
         make \
-        cmake \
+        cmake3 \
         autoconf
 
 # install other tools
