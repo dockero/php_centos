@@ -23,6 +23,8 @@ RUN yum -y install \
         cmake3 \
         autoconf
 
+RUN mv /usr/bin/cmake3 /usr/bin/cmake
+
 # install other tools
 RUN yum -y install \
         wget \
