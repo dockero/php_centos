@@ -101,6 +101,8 @@ RUN mkdir -p ~/.ssh \
 # download php src
 # http://cn2.php.net/
 # curl -L http://cn2.php.net/distributions/php-${PHP_VERSION}.tar.xz -o php-${PHP_VERSION}.tar.gz
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/r/re2c-0.14.3-2.el7.x86_64.rpm \
+        && re2c
 ARG PHP_VERSION
 ENV PATH $PATH:/usr/bin:/usr/sbin
 RUN cd /root \
