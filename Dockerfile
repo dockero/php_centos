@@ -118,8 +118,8 @@ RUN cd /root \
         && ./configure --prefix=/usr \
                 --with-config-file-path=/etc \
                 --with-config-file-scan-dir=/etc/php.d \
-                --enable-fpm \
                 --enable-debug \
+                --enable-fpm \
                 --with-mysqli=mysqlnd \
                 --with-pdo-mysql=mysqlnd \
                 --with-mysqli \
