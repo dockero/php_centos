@@ -23,8 +23,6 @@ RUN yum -y install \
         cmake3 \
         autoconf
 
-RUN mv /usr/bin/cmake3 /usr/bin/cmake
-
 # install other tools
 RUN yum -y install \
         wget \
@@ -48,10 +46,11 @@ RUN cd /tmp \
 RUN cp /usr/local/openssl/lib/pkgconfig/*.pc /usr/lib64/pkgconfig/
 
 # install test tools
-RUN wget https://github.com/google/googletest/archive/release-1.10.0.tar.gz \
+RUN cd /tmp \
+        && wget https://github.com/google/googletest/archive/release-1.10.0.tar.gz \
         && tar xf release-1.10.0.tar.gz \
         && cd googletest-release-1.10.0 \
-        && cmake -DBUILD_SHARED_LIBS=ON . \
+        && cmake3 -DBUILD_SHARED_LIBS=ON . \
         && make > /dev/null \
         && make install > /dev/null
 
