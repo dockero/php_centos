@@ -55,11 +55,12 @@ RUN cd /tmp \
         && make install > /dev/null
 
 # install git 2
-RUN yum -y remove git*
 RUN cd /tmp \
-        && wget https://www.kernel.org/pub/software/scm/git/git-2.22.2.tar.gz \
-        && tar xzf git-2.22.2.tar.gz \
-        && cd git-2.22.2 \
+        && git clone https://gitee.com/codinghuang/git.git \
+        && cd git \
+        && git checkout v2.22.2 \
+        && yum -y remove git* \
+        && make configure \
         && ./configure --with-openssl=/usr/local/openssl \
         && make > /dev/null \
         && make install > /dev/null
