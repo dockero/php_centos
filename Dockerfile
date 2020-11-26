@@ -9,7 +9,8 @@ RUN yum -y update && \
 RUN yum -y install \
         libcurl-devel \
         libxml2-devel \
-        sqlite-devel
+        sqlite-devel \
+        libffi-devel
 
 # install pressure test tools
 RUN yum -y install \
