@@ -85,19 +85,6 @@ RUN cd /root \
 RUN yum install -y \
         openssh-server
 
-# modify the password
-ARG PASSWORD
-RUN sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config \
-        && ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key \
-        && ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key \
-        && ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key \
-        && echo "root:${PASSWORD}" | chpasswd
-
-# add id_rsa.pub in authorized_keys
-ARG SSH_PUB_KEY
-RUN mkdir -p ~/.ssh \
-        && echo $SSH_PUB_KEY > ~/.ssh/authorized_keys
-
 # install php
 # download php src
 # http://cn2.php.net/
@@ -217,9 +204,22 @@ COPY etc/php.d etc/php.d
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php \
         && mv composer.phar /usr/local/bin/composer
-RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-        && composer global require hirak/prestissimo \
-        && composer global require "squizlabs/php_codesniffer=*"
+# RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
+#         && composer global require hirak/prestissimo \
+#         && composer global require "squizlabs/php_codesniffer=*"
+
+# modify the password
+ARG PASSWORD
+RUN sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config \
+        && ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key \
+        && ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key \
+        && ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key \
+        && echo "root:${PASSWORD}" | chpasswd
+
+# add id_rsa.pub in authorized_keys
+ARG SSH_PUB_KEY
+RUN mkdir -p ~/.ssh \
+        && echo $SSH_PUB_KEY > ~/.ssh/authorized_keys
 
 # set the path for ssh
 ARG LD_LIBRARY_PATH
