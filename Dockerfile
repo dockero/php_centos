@@ -10,7 +10,10 @@ RUN yum -y install \
         libcurl-devel \
         libxml2-devel \
         sqlite-devel \
-        libffi-devel
+        libffi-devel \
+        bzip2-devel \
+        libxslt \
+        libxslt-devel
 
 # install pressure test tools
 RUN yum -y install \
@@ -22,7 +25,8 @@ RUN yum -y install \
         gcc-c++ \
         make \
         cmake3 \
-        autoconf
+        autoconf \
+        bzip2
 
 # install other tools
 RUN yum -y install \
@@ -108,7 +112,6 @@ RUN cd /root \
         && ./configure --prefix=/usr \
                 --with-config-file-path=/etc \
                 --with-config-file-scan-dir=/etc/php.d \
-                --enable-debug \
                 --enable-fpm \
                 --with-mysqli=mysqlnd \
                 --with-pdo-mysql=mysqlnd \
