@@ -13,7 +13,8 @@ RUN yum -y install \
         libffi-devel \
         bzip2-devel \
         libxslt \
-        libxslt-devel
+        libxslt-devel \
+        oniguruma-devel
 
 # install pressure test tools
 RUN yum -y install \
@@ -237,6 +238,13 @@ ARG HTTP_PROXY
 ARG HTTPS_PROXY
 RUN echo "export http_proxy=${HTTP_PROXY}" >> /etc/profile
 RUN echo "export http_proxys=${HTTPS_PROXY}" >> /etc/profile
+
+# Install php tools
+RUN wget -q -O /usr/bin/phpbrew https://github.com/phpbrew/phpbrew/raw/master/phpbrew && chmod +x /usr/bin/phpbrew
+
+RUN phpbrew init \
+  && echo 'source $HOME/.phpbrew/bashrc' >> /root/.bashrc \
+  && source ~/.phpbrew/bashrc
 
 WORKDIR /root/codeDir
 
