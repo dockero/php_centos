@@ -16,6 +16,12 @@ RUN yum -y install \
         libxslt-devel \
         oniguruma-devel
 
+# install 32-bit libraries
+RUN yum -y install \
+        glibc-devel.i686 \
+        libgcc.i686 \
+        libstdc++-devel.i686
+
 # install pressure test tools
 RUN yum -y install \
         httpd-tools
